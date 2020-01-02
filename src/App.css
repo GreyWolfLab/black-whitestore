@@ -1,0 +1,75 @@
+.App {
+  text-align: center;
+}
+
+.scrolling-wrapper-flexbox {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  scrollbar-color: #0000 #0000;
+ 
+
+  .card {
+    flex: 0 0 auto;
+  }
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  { overflow: -moz-scrollbars-none; }
+
+}
+
+
+
+.element { overflow: -moz-scrollbars-none; }
+.element::-webkit-scrollbar { width: 0 !important }
+.element { -ms-overflow-style: none; }
+
+
+.App-logo {
+  animation: App-logo-spin infinite 20s linear;
+  height: 40vmin;
+  pointer-events: none;
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.txt{
+  font-size: .6rem;
+}
+
+@media screen and (max-width: 992px) {
+  .txt {
+  
+  }
+}
+
+/* On screens that are 600px or less, set the background color to olive */
+@media screen and (max-width: 600px) {
+  .txt {
+  
+  }
+}
