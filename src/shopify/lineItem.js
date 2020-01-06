@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
 function LineItem(props) {
   const [product] = useState(props.product);
   const [initCart, setInitCart] = useState({quantity:0});
   const [variant, setVariant] = useState({});
   const [variantPrice, setVariantPrice] = useState(0);
-  const [cart, setCart] = useState(JSON.parse(localStorage.getItem('cart')));
-
+  const cart  = useRef(JSON.parse(localStorage.getItem('cart')));
+  
   useEffect(() => {
     console.log(product);
     
@@ -16,6 +16,29 @@ function LineItem(props) {
 
     
   }, []);
+
+  const initVariant = (e) => {
+    console.log(e.target.name);
+    console.log(e.target.value);
+
+
+    setVariant(Object.assign(variant,{["variant"+ (e.target.name)]:e.target.value}));
+
+    //remove
+    console.log(variant);
+  }
+
+  const reInitCart = (e) => {
+
+    console.log("reinitCart");
+    console.log(variant);
+    let variantID = getVariantID(variant);
+    
+    console.log(variantID);
+
+    setInitCart(Object.assign(initCart,{quantity: e.target.value, variantId: variantID }));
+
+  }
 
   //call get variant id 
   function returnOptions() {
@@ -30,7 +53,7 @@ function LineItem(props) {
                     </div>
                     
                     <div className=" flex justify-end lg:w-1/2">
-                    <select name={e.attrs.name.value} onChange={(e) => setVariant(Object.assign(variant,{["variant"+i]:e.target.value}))} >
+                    <select key={i} name={e.attrs.name.value} onChange={(e) => initVariant(e)} >
                     <option> Select a {e.attrs.name.value}</option>
                             {e.attrs.values.value.map((f) =>{
                                     return(
@@ -46,13 +69,14 @@ function LineItem(props) {
      )
 
   }
+
   function getVariantID(e){
        
           let i = 0;
           let z = "";
 
 
-          for (let [key, value] of Object.entries(variant)) {
+          for (let [key, value] of Object.entries(e)) {
                 //console.log(`${key}: ${value}`);
 
                 if(i > 0){
@@ -92,14 +116,21 @@ function LineItem(props) {
           let productTitle = {title: product.attrs.title.value}
           let currentProductPrice = {price: (variantPrice * initCart.quantity)}
           //find out why the vatiant does not update
-          setInitCart(Object.assign(initCart,{variantId: getVariantID(variant)},imageObject,productTitle,currentProductPrice))
+          setInitCart(Object.assign(initCart,imageObject,productTitle,currentProductPrice))
 
+          console.log(initCart);
           console.log(currentProductPrice);
 
           if(cart != null){
-            cart.push(initCart)
+            console.log(cart)
+            let currentCart = JSON.parse(localStorage.getItem('cart'));
+            
+            currentCart.push(initCart)
+            localStorage.setItem('cart', JSON.stringify(currentCart));
+           // cart.current.push(initCart)
+            console.log(currentCart)
           }
-          localStorage.setItem('cart', JSON.stringify(cart));
+          //localStorage.setItem('cart', JSON.stringify(cart));
   //         }else{
  
   //             console.log(cart)
@@ -136,7 +167,7 @@ function LineItem(props) {
           
           <div className="quantity w-full flex uppercase p-2 text-2xl">
                   <div className="w-48 lg:w-1/2 flex justify-start ">quantity</div>
-                  <div className="w-24 lg:w-1/2 flex justify-end"><input className="w-12 text-right" placeholder="0" onChange={(e) => setInitCart(Object.assign(initCart,{quantity: e.target.value, variantId: getVariantID(variant) })) }></input></div>
+                  <div className="w-24 lg:w-1/2 flex justify-end"><input className="w-12 text-right" placeholder="0" onChange={(e) => reInitCart(e) }></input></div>
           </div>
 
           <div className="quantity w-full flex uppercase p-2 text-2xl">

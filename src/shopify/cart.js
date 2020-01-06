@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef, useCallback } from "react";
 import { client } from "../shopify/initShopify";
 import LineItem from "./lineItem";
 
+//delete current value and then freshesh what is in the var
+
 function Cart() {
   const [cart, setCart] = useState(JSON.parse(localStorage.getItem("cart")));
   //const [cartStatus, setCartStatus] = useState('cart');
