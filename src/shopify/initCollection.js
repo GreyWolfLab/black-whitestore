@@ -1,16 +1,21 @@
 import Client from 'shopify-buy';
 
 
+const client = Client.buildClient({
+  domain: '34i35.myshopify.com', //zwookwa store
+  storefrontAccessToken: '32c0f631233ba8fa812d2eca8db0c295'
+});
+
 const shopCollection = async () =>{
 
   let result = []
 
-  const client = Client.buildClient({
-        domain: '34i35.myshopify.com', //zwookwa store
-        storefrontAccessToken: '32c0f631233ba8fa812d2eca8db0c295'
-    });
+  // const client = Client.buildClient({
+  //       domain: '34i35.myshopify.com', //zwookwa store
+  //       storefrontAccessToken: '32c0f631233ba8fa812d2eca8db0c295'
+  //   });
 
-    console.log("change")
+  //   console.log("change")
 
 
 //     // Create an empty checkout
@@ -33,7 +38,7 @@ const shopCollection = async () =>{
       }).then(r => result = r);
 
 
-    return result
+    return result;
       
 
 
@@ -41,4 +46,4 @@ const shopCollection = async () =>{
 };
 
 
-export default  shopCollection;
+export {shopCollection, client};

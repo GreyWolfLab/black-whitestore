@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import shopInit from './initShopify';
+import {testShop as shopInit} from './initShopify';
 
 
 function ProductCatalog(props) {

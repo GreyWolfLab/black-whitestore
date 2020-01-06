@@ -1,16 +1,14 @@
 import React, {Component} from 'react';
 import MyContext from './dataContect';
-
+import {cartLength} from './compoennt/cartInit';
 
 class MyProvider extends Component{
 
-    state={
-  
-    }
+    // state = {}
   
     render() {
       return(
-        <MyContext.Provider value="I'm the values">
+        <MyContext.Provider value={0}>
           {this.props.children}
         </MyContext.Provider>
       )
@@ -20,3 +18,6 @@ class MyProvider extends Component{
 
 
   export default MyProvider;
+
+
+  // cartLength(JSON.parse(localStorage.getItem('cart')))

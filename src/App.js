@@ -9,7 +9,7 @@ function App() {
   return (
     <MyProvider>
       <div className="w-full  h-full flex flex-wrap p-1 justify-center">
-        <CollectionCatalog></CollectionCatalog>
+        <CollectionCatalog ></CollectionCatalog>
       </div>
     </MyProvider>
   );

@@ -1,10 +1,16 @@
 import React, { useState, useEffect } from "react";
-import collectionInit from "./initCollection";
+import {shopCollection as collectionInit} from "./initCollection";
 import ProductCatalog from "./product";
 import MyContext from "../dataContect";
-import { BrowserRouter, Route, Link } from "react-browser-router";
+import { BrowserRouter, Route, Link, withRouter } from "react-browser-router";
 import LineItem from "./lineItem";
 import defaultProduct from './defaultProduct';
+import Cart from "./cart";
+import {cartLength} from '../compoennt/cartInit';
+import SubNav from "../navigation/subNav";
+import Back from '../compoennt/backButton';
+import Foward from "../compoennt/fowardButton";
+import initCheckout from './initCheckout';
 
 function CollectionCatalog() {
   const [products, setProducts] = useState([]);
@@ -18,6 +24,7 @@ function CollectionCatalog() {
   const [back, setBack] = useState('');
   const [subTitle, setSubTitle] = useState('');
   const [loading, setLoading] = useState(false);
+  const [cart, setCart] = useState(cartLength(JSON.parse(localStorage.getItem('cart'))));
 
   useEffect(() => {
     if (!loading) {
@@ -26,8 +33,17 @@ function CollectionCatalog() {
         .then(setLoading(true));
     }
 
-    console.log(item)
-  }, [products, loading]);
+    if(cart == 0){
+      localStorage.setItem('cart',JSON.stringify([]));
+    }
+    
+
+    initCheckout();
+    //setCart(cartLength(JSON.parse(localStorage.getItem('cart'))));
+    
+    //setTitle("Black & White");
+
+  }, [products,loading,cart]);
 
   const ReturnCollection = () => {
     return collection.map((e, i) => {
@@ -38,12 +54,12 @@ function CollectionCatalog() {
         >
           <Link
             to="/products"
-            className="w-full bg-black h-full text-white flex items-center justify-center text-xl uppercase"
+            className="w-full bg-black h-full text-white flex items-center justify-center text-xl uppercase appearance-none"
             onClick={() => {
               setProducts(e.products);
-              setTitle("Why Not Series")
-              setBackTitle("Collection")
-              setSubTitle("Black & White")
+              //setTitle(e.title)
+              setBackTitle("Back")
+              setSubTitle(e.title)
             }}
           >
             {e.title}
@@ -64,10 +80,10 @@ function CollectionCatalog() {
             ></img>
             <div className="w-full flex justify-end">
             <div className="lg:w-64 p-2">{e.title}</div>
-            <Link to="/product"  className="lg:w-32 bg-red-500 p-2" onClick={() => {setItem(e) 
+            <Link to="/product"  className="lg:w-32 bg-red-500 p-2 appearance-none" onClick={() => {setItem(e) 
                  setTitle("Citizen Bank")
-                 setBackTitle("Why Not")
-                 setSubTitle("Black & White")
+                 setBackTitle("Back")
+                // setSubTitle("Black & White")
                  setBack('products')
             }}>Buy</Link>
             </div>
@@ -83,18 +99,21 @@ function CollectionCatalog() {
   return (
     <BrowserRouter>
       <React.Fragment>
-        <div className="p-2 w-full h-10 lg:h-16 bg-black text-white  flex items-center justify-center text-lg uppercase">
-            <Link to={"/"+back} className="w-1/5 lg:w-1/6 text-xs lg:text-lg">{backTitle}</Link>
-            <div className="w-full flex text-xs lg:text-sm justify-center">
+        <div className="p-2 w-full h-10 lg:h-16 bg-black text-white  flex items-center justify-center text-lg uppercase appearance-none">
+            <Back></Back>
+            <Link to={"/"} className="w-full flex text-xs lg:text-sm justify-center appearance-none">
             {title}
-            </div>
-            <div className="w-1/5 lg:w-1/6 text-xs lg:text-sm flex justify-end">{subTitle}</div>
+            </Link>
+            <Foward title={subTitle}></Foward>
 
         </div>
+
+        <SubNav></SubNav>
 
         <Route exact path="/" component={ReturnCollection} />
 
         <Route path="/products" component={ReturnProducts} />
+        <Route path="/cart" component={Cart} />
 
         <Route path="/product" render={() => (<LineItem product={item}></LineItem>)} />
       </React.Fragment>
